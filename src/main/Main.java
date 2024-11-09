@@ -6,17 +6,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
-import fileio.Input;
+import fileio.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
+import my_classes.Constants;
+import my_classes.InitGame;
+import my_classes.Player;
+import my_classes.TableCard;
+
 /**
- * The entry point to this homework. It runs the checker that tests your implentation.
+ * The entry point to this homework. It runs the checker that tests your implementation.
  */
 public final class Main {
     /**
@@ -66,29 +72,47 @@ public final class Main {
         ObjectMapper objectMapper = new ObjectMapper();
         Input inputData = objectMapper.readValue(new File(CheckerConstants.TESTS_PATH + filePath1),
                 Input.class);
-
         ArrayNode output = objectMapper.createArrayNode();
+
+        int playerOneWins = 0;
+        int playerTwoWins = 0;
+
+        DecksInput playerOneDeck_copy = new DecksInput(inputData.getPlayerOneDecks());
+        DecksInput playerTwoDeck_copy = new DecksInput(inputData.getPlayerTwoDecks());
+
+        Player playerOne = new Player();
+        Player playerTwo = new Player();
+
+        ArrayList<ArrayList<TableCard>> table = new ArrayList<>();
+
+        for (int i = 0; i < Constants.rows; i++) {
+            ArrayList<TableCard> row = new ArrayList<>();
+            table.add(row);
+        }
+
+        for (GameInput game : inputData.getGames()) {
+            InitGame.init_game(inputData, output, game, playerOneWins, playerTwoWins, table, playerOne, playerTwo);
+            inputData.setPlayerOneDecks(playerOneDeck_copy);
+            inputData.setPlayerTwoDecks(playerTwoDeck_copy);
+        }
 
         /*
          * TODO Implement your function here
          *
          * How to add output to the output array?
-         * There are multiple ways to do this, here is one example:
-         *
-         * ObjectMapper mapper = new ObjectMapper();
-         *
-         * ObjectNode objectNode = mapper.createObjectNode();
-         * objectNode.put("field_name", "field_value");
-         *
-         * ArrayNode arrayNode = mapper.createArrayNode();
-         * arrayNode.add(objectNode);
-         *
-         * output.add(arrayNode);
-         * output.add(objectNode);
-         *
-         */
+         * There are multiple ways to do this, here is one example:*/
+
+//         ObjectMapper mapper = new ObjectMapper();
+//         ObjectNode objectNode = mapper.createObjectNode();
+//         objectNode.put("field_name", "field_value");
+//         ArrayNode arrayNode = mapper.createArrayNode();
+//         arrayNode.add(objectNode);
+//         output.add(arrayNode);
+//         output.add(objectNode);
+
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);
     }
 }
+

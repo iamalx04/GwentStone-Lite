@@ -9,6 +9,7 @@ public final class StartGameInput {
     private int startingPlayer;
 
     public StartGameInput() {
+
     }
 
     public int getPlayerOneDeckIdx() {

@@ -10,6 +10,12 @@ public final class DecksInput {
     public DecksInput() {
     }
 
+    public DecksInput(DecksInput deck) {
+        this.nrCardsInDeck = deck.nrCardsInDeck;
+        this.nrDecks = deck.nrDecks;
+        this.decks = deck.decks;
+    }
+
     public int getNrCardsInDeck() {
         return nrCardsInDeck;
     }
