@@ -10,10 +10,18 @@ public final class DecksInput {
     public DecksInput() {
     }
 
-    public DecksInput(DecksInput deck) {
+    public DecksInput(final DecksInput deck) {
         this.nrCardsInDeck = deck.nrCardsInDeck;
         this.nrDecks = deck.nrDecks;
-        this.decks = deck.decks;
+        this.decks = new ArrayList<>();
+
+        for (ArrayList<CardInput> row : deck.decks) {
+            ArrayList<CardInput> newRow = new ArrayList<>();
+            for (CardInput card : row) {
+                newRow.add(new CardInput(card));
+            }
+            this.decks.add(newRow);
+        }
     }
 
     public int getNrCardsInDeck() {

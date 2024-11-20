@@ -13,6 +13,15 @@ public final class CardInput {
     public CardInput() {
     }
 
+    public CardInput(final CardInput cardInput) {
+        this.mana = cardInput.mana;
+        this.attackDamage = cardInput.attackDamage;
+        this.health = cardInput.health;
+        this.description = cardInput.description;
+        this.colors = cardInput.colors;
+        this.name = cardInput.name;
+    }
+
     public int getMana() {
         return mana;
     }

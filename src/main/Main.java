@@ -16,10 +16,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import my_classes.Constants;
-import my_classes.InitGame;
-import my_classes.Player;
-import my_classes.TableCard;
+import playinggame.Constants;
+import playinggame.InitGame;
+import playinggame.Player;
+import playinggame.TableCard;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implementation.
@@ -67,33 +67,44 @@ public final class Main {
      * @param filePath2 for output file
      * @throws IOException in case of exceptions to reading / writing
      */
+
     public static void action(final String filePath1,
                               final String filePath2) throws IOException {
+
         ObjectMapper objectMapper = new ObjectMapper();
         Input inputData = objectMapper.readValue(new File(CheckerConstants.TESTS_PATH + filePath1),
                 Input.class);
         ArrayNode output = objectMapper.createArrayNode();
 
-        int playerOneWins = 0;
-        int playerTwoWins = 0;
-
-        DecksInput playerOneDeck_copy = new DecksInput(inputData.getPlayerOneDecks());
-        DecksInput playerTwoDeck_copy = new DecksInput(inputData.getPlayerTwoDecks());
-
-        Player playerOne = new Player();
-        Player playerTwo = new Player();
+        DecksInput playerOneDecks = inputData.getPlayerOneDecks();
+        DecksInput playerTwoDecks = inputData.getPlayerTwoDecks();
 
         ArrayList<ArrayList<TableCard>> table = new ArrayList<>();
 
-        for (int i = 0; i < Constants.rows; i++) {
-            ArrayList<TableCard> row = new ArrayList<>();
+        for (int i = 0; i < Constants.ROWS; i++) {
+            ArrayList<TableCard> row = new ArrayList<>(Constants.ROWS);
             table.add(row);
         }
 
+        Player.setPlayerOneWins(0);
+        Player.setPlayerTwoWins(0);
+
         for (GameInput game : inputData.getGames()) {
-            InitGame.init_game(inputData, output, game, playerOneWins, playerTwoWins, table, playerOne, playerTwo);
-            inputData.setPlayerOneDecks(playerOneDeck_copy);
-            inputData.setPlayerTwoDecks(playerTwoDeck_copy);
+            DecksInput decks1copy = new DecksInput(playerOneDecks);
+            DecksInput decks2copy = new DecksInput(playerTwoDecks);
+
+            Player playerOne = new Player();
+            Player playerTwo = new Player();
+
+            InitGame.init(inputData, output, game, table, playerOne, playerTwo,
+                    decks1copy, decks2copy);
+
+            table = new ArrayList<>();
+
+            for (int i = 0; i < Constants.ROWS; i++) {
+                ArrayList<TableCard> row = new ArrayList<>(Constants.ROWS);
+                table.add(row);
+            }
         }
 
         /*

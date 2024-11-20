@@ -1,4 +1,4 @@
-package my_classes;
+package playinggame;
 
 import fileio.CardInput;
 import lombok.Getter;
@@ -6,19 +6,21 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-public class Player{
+public class Player {
+    @Getter @Setter private static int playerOneWins;
+    @Getter @Setter private static int playerTwoWins;
     @Getter @Setter private ArrayList<CardInput> hand;
-    @Getter @Setter private boolean finished_turn;
+    @Getter @Setter private boolean finishedTurn;
     @Getter @Setter private int mana = 0;
-    @Getter @Setter private ArrayList<CardInput> player_deck;
+    @Getter @Setter private ArrayList<CardInput> playerDeck;
     @Getter @Setter private CardInput hero;
     @Getter @Setter private boolean usedHero;
 
     public Player() {
         hand = new ArrayList<>();
-        this.finished_turn = false;
+        this.finishedTurn = false;
         this.mana = 0;
-        player_deck = new ArrayList<>();
+        playerDeck = new ArrayList<>();
         this.hero = new CardInput();
         this.usedHero = false;
     }
